@@ -1,8 +1,8 @@
 {
-  "name": "ant-design-prop-antd-4",
-  "version": "4.3.0",
-  "private": true,
-  "description": "An out-of-box UI solution for enterprise applications",
+  "name": "{{projectName}}",
+  "version": "{{projectVersion}}",
+  "description": "{{projectDescription}}",
+  "author": "{{author}}",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "umi build",
