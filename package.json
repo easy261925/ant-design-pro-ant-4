@@ -1,6 +1,6 @@
 {
-  "name": "{{projectName}}",
-  "version": "{{projectVersion}}",
+  "name": "ant-design-pro-ant-4",
+  "version": "1.0.0",
   "description": "{{projectDescription}}",
   "author": "{{author}}",
   "scripts": {
@@ -62,7 +62,7 @@
     "antd": "^4.8.0",
     "axios": "^0.21.0",
     "classnames": "^2.2.6",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.20",
     "moment": "^2.25.3",
     "omit.js": "^2.0.2",
     "qs": "^6.9.0",

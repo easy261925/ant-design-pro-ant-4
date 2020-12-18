@@ -3,14 +3,14 @@ import {
   MailTwoTone,
   MobileTwoTone,
   UserOutlined,
-  WechatOutlined
+  WechatOutlined,
 } from '@ant-design/icons';
 import { Alert, message, Tabs, Space } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormText } from '@ant-design/pro-form';
-import { connect, Dispatch, useIntl, FormattedMessage, history } from 'umi';
+import { connect, Dispatch, useIntl, FormattedMessage } from 'umi';
 import { StateType } from '@/models/login';
-import { getFakeCaptcha, LoginParamsType } from '@/services/login';
+import { getCaptchaService, LoginParamsType } from '@/services/login';
 import { ConnectState } from '@/models/connect';
 
 import styles from './index.less';
@@ -57,26 +57,26 @@ const Login: React.FC<LoginProps> = (props) => {
     }
   };
 
-  const tabsOnChange = (type: string) => {
+  const tabsOnChange = (currentType: string) => {
     const { dispatch } = props;
-    setType(type)
+    setType(currentType);
     dispatch({
       type: 'login/save',
       payload: {
-        statusContent: ''
-      }
-    })
-  }
+        statusContent: '',
+      },
+    });
+  };
 
-  const loginWith = (type: string) => {
-    switch (type) {
+  const loginWith = (current: string) => {
+    switch (current) {
       case 'wechart':
-        window.open('http://localhost:8150/api/ucenter/wx/login')
+        window.open('http://localhost:8150/api/ucenter/wx/login');
         break;
       default:
         break;
     }
-  }
+  };
 
   return (
     <div className={styles.main}>
@@ -116,9 +116,7 @@ const Login: React.FC<LoginProps> = (props) => {
         </Tabs>
 
         {!status && loginType === 'account' && !submitting && statusContent && (
-          <LoginMessage
-            content={statusContent}
-          />
+          <LoginMessage content={statusContent} />
         )}
         {type === 'account' && (
           <>
@@ -128,11 +126,11 @@ const Login: React.FC<LoginProps> = (props) => {
                 size: 'large',
                 prefix: <UserOutlined className={styles.prefixIcon} />,
               }}
-              placeholder='请输入用户名'
+              placeholder="请输入用户名"
               rules={[
                 {
                   required: true,
-                  message: '请输入用户名'
+                  message: '请输入用户名',
                 },
               ]}
             />
@@ -142,11 +140,11 @@ const Login: React.FC<LoginProps> = (props) => {
                 size: 'large',
                 prefix: <LockTwoTone className={styles.prefixIcon} />,
               }}
-              placeholder='请输入密码'
+              placeholder="请输入密码"
               rules={[
                 {
                   required: true,
-                  message: '请输入密码'
+                  message: '请输入密码',
                 },
               ]}
             />
@@ -204,13 +202,13 @@ const Login: React.FC<LoginProps> = (props) => {
               captchaTextRender={(timing, count) =>
                 timing
                   ? `${count} ${intl.formatMessage({
-                    id: 'pages.getCaptchaSecondText',
-                    defaultMessage: '获取验证码',
-                  })}`
+                      id: 'pages.getCaptchaSecondText',
+                      defaultMessage: '获取验证码',
+                    })}`
                   : intl.formatMessage({
-                    id: 'pages.login.phoneLogin.getVerificationCode',
-                    defaultMessage: '获取验证码',
-                  })
+                      id: 'pages.login.phoneLogin.getVerificationCode',
+                      defaultMessage: '获取验证码',
+                    })
               }
               name="captcha"
               rules={[
@@ -225,7 +223,7 @@ const Login: React.FC<LoginProps> = (props) => {
                 },
               ]}
               onGetCaptcha={async (mobile) => {
-                const result = await getFakeCaptcha(mobile);
+                const result = await getCaptchaService(mobile);
                 if (result.success === false) {
                   return;
                 }

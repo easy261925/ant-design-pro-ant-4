@@ -52,6 +52,19 @@
             component: './ListTableList',
           },
           {
+            path: '/setting',
+            name: '系统管理',
+            icon: 'setting',
+            routes: [
+              {
+                path: '/setting/organization',
+                name: '机构管理',
+                icon: 'smile',
+                component: './setting/organization',
+              },
+            ],
+          },
+          {
             component: './404',
           },
         ],

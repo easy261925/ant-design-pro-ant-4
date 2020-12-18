@@ -7,17 +7,10 @@ export interface LoginParamsType {
   captcha: string;
 }
 
-export async function fakeAccountLogin(params: LoginParamsType) {
-  return request('/api/login/account', {
-    method: 'POST',
-    data: params,
-  });
-}
-
-export async function getFakeCaptcha(mobile: string) {
+export async function getCaptchaService(mobile: string) {
   return request(`/server/api/msmservice/sendMsg`, {
     method: 'POST',
-    data: mobile
+    data: mobile,
   });
 }
 
