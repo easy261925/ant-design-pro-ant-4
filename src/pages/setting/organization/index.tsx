@@ -1,41 +1,26 @@
-import React, { useRef, useState, Fragment } from 'react';
+import React, { useRef, Fragment } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProTable, { ActionType, ProColumnType } from '@ant-design/pro-table';
+import ProTable, { ActionType } from '@ant-design/pro-table';
 import { Button, Divider, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { getAllServices } from '@/services/organization';
-import { FormModeEnum, LayoutInterface, FormItemLayoutInterface } from '@/data';
+import { FormModeEnum } from '@/data';
 import { OrganizationInterface } from './data';
 import CCDrawer from './CCDrawer';
-
-interface Extra<T> extends ProColumnType<T> {
-  colLayout?: LayoutInterface;
-  formItemLayout?: FormItemLayoutInterface;
-  content?: any;
-}
+import { CCColumns } from './interface';
 
 const Organization = () => {
   const actionRef = useRef<ActionType>();
-  // const [visible, setVisible] = useState<boolean>(false);
-  const [record, setRecord] = useState<OrganizationInterface | null>();
-  // const [formMode, setFormMode] = useState<FormModeEnum>(FormModeEnum.view)
-
-  // const handler = (record: OrganizationInterface | null) => {
-  //   setRecord(record)
-  // }
-
-  console.log('setRecord', setRecord);
 
   const onFinish = (values?: OrganizationInterface) => {
     console.log('values', values);
   };
 
-  const columns: Extra<OrganizationInterface>[] = [
+  const columns: CCColumns<OrganizationInterface>[] = [
     {
       title: '机构名称',
       dataIndex: 'organizationName',
-      tip: '机构名称',
-      tooltip: '123',
+      tooltip: '机构名称',
       formItemProps: {
         rules: [
           {
@@ -44,22 +29,57 @@ const Organization = () => {
           },
         ],
       },
-      render: (dom) => (
-        <CCDrawer formmode={FormModeEnum.view} columns={columns} record={record}>
+      render: (dom, entity) => (
+        <CCDrawer formmode={FormModeEnum.view} columns={columns} record={entity}>
           <a>{dom}</a>
         </CCDrawer>
       ),
-      content: {
+      formItem: {
         colLayout: { span: 12 },
         formItemLayout: {
           labelCol: {
-            span: 6,
+            span: 8,
           },
           wrapperCol: {
-            span: 18,
+            span: 16,
           },
         },
-        dom: <Input placeholder="ppp" />,
+        element: <Input placeholder="ppp" />,
+      },
+    },
+    {
+      title: '密码',
+      dataIndex: 'password',
+      tooltip: '123',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请填写密码',
+          },
+        ],
+      },
+      hideInTable: true,
+      formItem: {
+        colLayout: { span: 12 },
+        formItemLayout: {
+          labelCol: {
+            span: 8,
+          },
+          wrapperCol: {
+            span: 16,
+          },
+        },
+        element: <Input placeholder="ppp" />,
+      },
+    },
+    {
+      title: '输入1',
+      dataIndex: 'a',
+      tooltip: '123',
+      hideInTable: true,
+      formItem: {
+        element: <Input placeholder="ppp" />,
       },
     },
     {
@@ -113,7 +133,7 @@ const Organization = () => {
             key="create"
             formmode={FormModeEnum.create}
             columns={columns}
-            record={record}
+            record={null}
             onFinish={onFinish}
           >
             <Button type="primary">

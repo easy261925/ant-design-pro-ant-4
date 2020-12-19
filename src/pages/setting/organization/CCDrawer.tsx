@@ -16,7 +16,7 @@ interface CCDrawerProps {
   onFinish?: (values?: any) => void;
   columns?: ProColumns<any>[];
   record?: any;
-  onClick?: () => void;
+  onClickCallback?: () => void;
 }
 
 const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
@@ -28,28 +28,24 @@ const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
     width = 650,
     placement,
     closable = true,
-    onClick,
     onClose,
     onFinish,
     footer,
     loading,
     columns,
     record,
+    destroyOnClose = true,
+    onClickCallback,
     ...ext
   } = props;
   const [visible, setVisible] = useState(false);
-  console.log('columns', columns);
-  console.log('record', record);
 
   const [form] = Form.useForm();
-
-  const handler = (state: boolean) => {
-    setVisible(state);
-  };
 
   const onClosed = () => {
     if (onClose) {
       onClose();
+      setVisible(false);
     } else {
       setVisible(false);
     }
@@ -69,12 +65,25 @@ const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
       {children ? (
         <Fragment>
           {React.cloneElement(children as any, {
-            onClick: () => handler(true),
+            onClick: () => {
+              if (onClickCallback) {
+                onClickCallback();
+              }
+              setVisible(true);
+            },
             style: { display: 'inline-block' },
           })}
         </Fragment>
       ) : (
-        <Button type="primary" onClick={() => handler(true)}>
+        <Button
+          type="primary"
+          onClick={() => {
+            if (onClickCallback) {
+              onClickCallback();
+            }
+            setVisible(true);
+          }}
+        >
           打开
         </Button>
       )}
@@ -86,7 +95,7 @@ const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
         closable={closable}
         onClose={onClosed}
         visible={visible}
-        destroyOnClose
+        destroyOnClose={destroyOnClose}
       >
         <Form form={form}>
           <CCForm columns={columns} record={record} />
