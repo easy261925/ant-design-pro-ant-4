@@ -50,6 +50,7 @@ export default {
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
 
+  'menu.测试页面': '测试页面',
   'menu.系统管理': '系统管理',
   'menu.系统管理.机构管理': '机构管理',
 };

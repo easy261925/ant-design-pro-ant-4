@@ -1,4 +1,6 @@
-﻿export default [
+﻿const { EASYCC } = process.env;
+
+export default [
   {
     path: '/user',
     component: '../layouts/UserLayout',
@@ -23,6 +25,14 @@
             path: '/',
             redirect: '/welcome',
           },
+          EASYCC === 'test'
+            ? {
+                path: '/test',
+                name: '测试页面',
+                icon: 'setting',
+                component: './test/cc',
+              }
+            : null,
           {
             path: '/welcome',
             name: 'welcome',
