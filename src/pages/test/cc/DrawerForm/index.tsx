@@ -9,11 +9,20 @@ import { TestInterface } from './data';
 import CCDrawer from './CCDrawer';
 import { CCColumns } from './interface';
 
+const multipleEnum = {
+  a: { text: '多选项0', status: 'Default' },
+  b: { text: '多选项1', status: 'Processing' },
+  c: { text: '多选项2', status: 'Success' },
+  d: { text: '多选项3', status: 'Error' },
+};
+
 const Organization = () => {
   const actionRef = useRef<ActionType>();
 
   const onFinish = (values?: TestInterface) => {
     console.log('values', values);
+    // const { dtCreaDateTime } = values
+    // console.log('dtCreaDateTime', moment(dtCreaDateTime).format('YYYY-MM-DD HH:mm:ss'))
   };
 
   const columns: CCColumns<TestInterface>[] = [
@@ -97,58 +106,88 @@ const Organization = () => {
       title: '选择',
       dataIndex: 'select',
       tooltip: '这是选择',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '请选择',
-          },
-        ],
-      },
       valueEnum: {
         0: { text: '选项0', status: 'Default' },
         1: { text: '选项1', status: 'Processing' },
         2: { text: '选项2', status: 'Success' },
         3: { text: '选项3', status: 'Error' },
       },
-      // formItem: {
-      //   props: {
-      //     rules: [
-      //       {
-      //         required: true,
-      //         message: '请选择选项'
-      //       }
-      //     ]
-      //   },
-      //   element: <Select placeholder='请选择'>
-      //     <Select.Option value="0">
-      //       选项一
-      //     </Select.Option>
-      //     <Select.Option value="1">
-      //       选项二
-      //     </Select.Option>
-      //     <Select.Option value="2">
-      //       选项三
-      //     </Select.Option>
-      //     <Select.Option value="3">
-      //       选项四
-      //     </Select.Option>
-      //   </Select>
-      // }
+      formItem: {
+        props: {
+          placeholder: '请单选',
+          rules: [
+            {
+              required: true,
+              message: '请选择选项',
+            },
+          ],
+        },
+      },
+    },
+    {
+      title: '多选',
+      dataIndex: 'multiple',
+      valueEnum: multipleEnum,
+      renderText: (val) => val.map((item: string) => multipleEnum[item].text).join(','),
+      formItem: {
+        props: {
+          mode: 'multiple',
+          placeholder: '请多选',
+          rules: [
+            {
+              required: true,
+            },
+          ],
+        },
+      },
     },
     {
       title: '创建时间',
       dataIndex: 'dtCreaDateTime',
       search: false,
-      hideInForm: true,
       valueType: 'dateTime',
     },
     {
-      title: '更新时间',
-      dataIndex: 'dtUpdateDateTime',
+      title: '选择时间',
+      dataIndex: 'dateRange',
       search: false,
-      hideInForm: true,
-      valueType: 'dateTime',
+      valueType: 'dateTimeRange',
+    },
+    {
+      title: '数字',
+      dataIndex: 'digit',
+      search: false,
+      valueType: 'digit',
+      formItem: {
+        props: {
+          max: 20,
+        },
+      },
+    },
+    {
+      title: '切换',
+      dataIndex: 'switch',
+      formItem: {
+        props: {
+          elType: 'switch',
+        },
+      },
+      hideInTable: true,
+      render: (val) => (val ? '选中' : '未选中'),
+    },
+    {
+      title: '上传图片',
+      dataIndex: 'uploadFile',
+      formItem: {
+        props: {
+          elType: 'upload',
+          action: '/upload.do',
+          listType: 'picture',
+          multiple: true,
+          // children: <a>上传文件</a>,
+        },
+      },
+      hideInTable: true,
     },
     {
       title: '操作',
@@ -192,7 +231,7 @@ const Organization = () => {
           >
             <Button type="primary">
               <PlusOutlined />
-              新建机构
+              新建
             </Button>
           </CCDrawer>,
         ]}

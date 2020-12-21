@@ -5,6 +5,10 @@ export interface TestInterface extends BaseBean {
   password?: string;
   textarea?: string;
   select?: string;
+  multiple?: string[];
+  dateRange?: string[] | number[];
+  switch?: boolean;
+  digit?: number;
 }
 
 export interface TableListData {

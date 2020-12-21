@@ -1,9 +1,24 @@
 import React from 'react';
-import { Col, Form, Row, Select, Input } from 'antd';
+import {
+  Col,
+  Form,
+  Row,
+  Select,
+  Input,
+  DatePicker,
+  InputNumber,
+  Switch,
+  Upload,
+  Button,
+} from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import { ProColumns } from '@ant-design/pro-table';
 import { get } from 'lodash';
+import moment from 'moment';
 import { LayoutInterface, FormItemLayoutInterface } from '@/data';
 import { CCColumns } from './interface';
+import { isEmpty } from '@/utils/utils';
+import PickerWithType from './PickerWithType';
 
 interface CCFormProps {
   columns?: ProColumns<any>[];
@@ -11,6 +26,17 @@ interface CCFormProps {
   formItemLayout?: FormItemLayoutInterface;
   record?: any;
 }
+
+const valueTypeForDate = [
+  'date',
+  'dateWeek',
+  'dateMonth',
+  'dateQuarter',
+  'dateYear',
+  'dateTime',
+  'time',
+];
+const valueTypeForDateRange = ['dateRange', 'dateTimeRange'];
 
 const CCForm: React.FC<CCFormProps> = ({
   columns = [],
@@ -40,6 +66,124 @@ const CCForm: React.FC<CCFormProps> = ({
             initialValue = get(record, String(item.dataIndex));
           }
 
+          const rules = item.formItem?.props?.rules || item.formItemProps?.rules;
+
+          if (item.formItem?.props?.elType === 'upload') {
+            return (
+              <Col key={key} {...newColLayout}>
+                <Form.Item
+                  shouldUpdate
+                  label={item.title}
+                  name={item.dataIndex}
+                  {...newFormItemLayout}
+                  {...item.formItemProps}
+                  rules={rules}
+                  valuePropName="fileList"
+                  getValueFromEvent={(e) => {
+                    // console.log('Upload event:', e);
+                    if (Array.isArray(e)) {
+                      return e;
+                    }
+                    return e && e.fileList;
+                  }}
+                  initialValue={!isEmpty(initialValue) ? initialValue : []}
+                >
+                  <Upload
+                    name={item.dataIndex ? `${item.dataIndex}` : 'file'}
+                    action={item.formItem?.props?.action || '/upload.do'}
+                    listType={item.formItem?.props?.listType || 'text'}
+                    multiple={item.formItem?.props?.multiple}
+                    accept={item.formItem?.props?.accept}
+                    {...item.formItem.props}
+                  >
+                    {item.formItem?.props?.children || (
+                      <Button icon={<UploadOutlined />}>上传文件</Button>
+                    )}
+                  </Upload>
+                </Form.Item>
+              </Col>
+            );
+          }
+
+          if (item.formItem?.props?.elType === 'switch') {
+            return (
+              <Col key={key} {...newColLayout}>
+                <Form.Item
+                  shouldUpdate
+                  label={item.title}
+                  name={item.dataIndex}
+                  {...newFormItemLayout}
+                  {...item.formItemProps}
+                  rules={rules}
+                  valuePropName="checked"
+                  initialValue={!isEmpty(initialValue) ? initialValue : false}
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+            );
+          }
+
+          if (item.valueType === 'digit') {
+            return (
+              <Col key={key} {...newColLayout}>
+                <Form.Item
+                  shouldUpdate
+                  label={item.title}
+                  name={item.dataIndex}
+                  {...newFormItemLayout}
+                  {...item.formItemProps}
+                  rules={rules}
+                  initialValue={!isEmpty(Number(initialValue)) ? Number(initialValue) : null}
+                >
+                  <InputNumber style={{ width: '100%' }} {...item.formItem?.props} />
+                </Form.Item>
+              </Col>
+            );
+          }
+
+          if (item.valueType && valueTypeForDateRange.includes(item.valueType as string)) {
+            return (
+              <Col key={key} {...newColLayout}>
+                <Form.Item
+                  shouldUpdate
+                  label={item.title}
+                  name={item.dataIndex}
+                  {...newFormItemLayout}
+                  {...item.formItemProps}
+                  rules={rules}
+                  initialValue={
+                    !isEmpty(initialValue) && initialValue.length > 0
+                      ? [moment(initialValue[0]), moment(initialValue[1])]
+                      : []
+                  }
+                >
+                  <DatePicker.RangePicker
+                    style={{ width: '100%' }}
+                    showTime={item.valueType === 'dateTimeRange'}
+                  />
+                </Form.Item>
+              </Col>
+            );
+          }
+
+          if (item.valueType && valueTypeForDate.includes(item.valueType as string)) {
+            return (
+              <Col key={key} {...newColLayout}>
+                <Form.Item
+                  shouldUpdate
+                  label={item.title}
+                  name={item.dataIndex}
+                  {...newFormItemLayout}
+                  {...item.formItemProps}
+                  rules={rules}
+                  initialValue={!isEmpty(initialValue) ? moment(initialValue) : null}
+                >
+                  <PickerWithType type={item.valueType} style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+            );
+          }
           if (item.valueType === 'textarea') {
             return (
               <Col key={key} {...newColLayout}>
@@ -49,6 +193,7 @@ const CCForm: React.FC<CCFormProps> = ({
                   name={item.dataIndex}
                   {...newFormItemLayout}
                   {...item.formItemProps}
+                  rules={rules}
                   initialValue={initialValue}
                 >
                   <Input.TextArea
@@ -73,9 +218,13 @@ const CCForm: React.FC<CCFormProps> = ({
                   name={item.dataIndex}
                   {...newFormItemLayout}
                   {...item.formItemProps}
-                  initialValue={initialValue}
+                  rules={rules}
+                  initialValue={initialValue || []}
                 >
-                  <Select>
+                  <Select
+                    mode={item.formItem?.props?.mode}
+                    placeholder={item.formItem?.props?.placeholder}
+                  >
                     {selectKeys.map((value) => {
                       return (
                         <Select.Option value={value} key={value}>
@@ -98,6 +247,7 @@ const CCForm: React.FC<CCFormProps> = ({
                   name={item.dataIndex}
                   {...newFormItemLayout}
                   {...item.formItemProps}
+                  rules={rules}
                   initialValue={initialValue}
                 >
                   {React.cloneElement(item.formItem?.element, {

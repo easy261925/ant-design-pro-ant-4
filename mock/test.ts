@@ -11,6 +11,10 @@ const genList = (current: number, pageSize: number) => {
       id: i + 1,
       username: `${i}username`,
       password: `${i}password`,
+      multiple: ['a', 'c'],
+      dateRange: [Date.now(), Date.now()],
+      digit: i,
+      switch: i % 2 === 0 ? true : false,
       dtCreaDateTime: Date.now(),
       dtUpdateDateTime: Date.now(),
       textarea:

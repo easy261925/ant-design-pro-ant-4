@@ -1,5 +1,6 @@
 import React, { useState, ReactNode, Fragment } from 'react';
 import { Drawer, Button, Row, Form } from 'antd';
+import ProDescriptions from '@ant-design/pro-descriptions';
 import { FormModeEnum, FormModeLabelEnum } from '@/data';
 import { DrawerProps } from 'antd/lib/drawer';
 import { ProColumns } from '@ant-design/pro-table';
@@ -17,6 +18,13 @@ interface CCDrawerProps {
   columns?: ProColumns<any>[];
   record?: any;
   onClickCallback?: () => void;
+  descriptionsProps?: {
+    column: number;
+    title: string;
+    request: (params: { [key: string]: any }) => Promise<any>;
+    params: Object;
+    columns: ProColumns<any>[];
+  };
 }
 
 const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
@@ -36,6 +44,7 @@ const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
     record,
     destroyOnClose = true,
     onClickCallback,
+    descriptionsProps,
     ...ext
   } = props;
   const [visible, setVisible] = useState(false);
@@ -43,6 +52,7 @@ const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
   const [form] = Form.useForm();
 
   const onClosed = () => {
+    form.resetFields();
     if (onClose) {
       onClose();
       setVisible(false);
@@ -53,12 +63,24 @@ const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
 
   const onSubmit = () => {
     form.validateFields().then((values) => {
+      form.resetFields();
       if (onFinish) {
         onFinish(values);
         setVisible(false);
       }
     });
   };
+
+  let showTitle = null;
+  if (formmode) {
+    if (formmode !== FormModeEnum.view) {
+      showTitle = `${FormModeLabelEnum[formmode]}${title}`;
+    } else {
+      showTitle = null;
+    }
+  } else {
+    showTitle = title;
+  }
 
   return (
     <Fragment>
@@ -87,19 +109,35 @@ const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
           打开
         </Button>
       )}
+
       <Drawer
-        {...ext}
-        title={formmode ? `${FormModeLabelEnum[formmode]}${title}` : title}
+        title={showTitle}
         placement={placement}
         width={width}
-        closable={closable}
+        closable={formmode === FormModeEnum.view ? false : closable}
         onClose={onClosed}
         visible={visible}
         destroyOnClose={destroyOnClose}
+        {...ext}
       >
-        <Form form={form}>
-          <CCForm columns={columns} record={record} />
-        </Form>
+        {formmode === FormModeEnum.view ? (
+          <ProDescriptions<any>
+            column={2}
+            title={record?.username}
+            request={async () => ({
+              data: record || {},
+            })}
+            params={{
+              id: record?.username,
+            }}
+            columns={columns}
+            {...descriptionsProps}
+          />
+        ) : (
+          <Form form={form}>
+            <CCForm columns={columns} record={record} />
+          </Form>
+        )}
         <div style={{ width }} className={styles.btnWrap}>
           {footer || (
             <Fragment>
