@@ -52,7 +52,9 @@ const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
   const [form] = Form.useForm();
 
   const onClosed = () => {
-    form.resetFields();
+    if (formmode !== FormModeEnum.view) {
+      form.resetFields();
+    }
     if (onClose) {
       onClose();
       setVisible(false);
