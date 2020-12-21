@@ -172,12 +172,14 @@ const Organization = () => {
           elType: 'switch',
         },
       },
+      search: false,
       hideInTable: true,
       render: (val) => (val ? '选中' : '未选中'),
     },
     {
       title: '上传图片',
       dataIndex: 'uploadFile',
+      search: false,
       formItem: {
         props: {
           elType: 'upload',

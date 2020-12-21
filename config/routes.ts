@@ -30,7 +30,18 @@ export default [
                 path: '/test',
                 name: '测试页面',
                 icon: 'setting',
-                component: './test/cc',
+                routes: [
+                  {
+                    path: '/test/drawer',
+                    name: '管理页面',
+                    component: './test/cc/DrawerForm',
+                  },
+                  {
+                    path: '/test/dnd',
+                    name: '待办任务',
+                    component: './test/cc/Dnd',
+                  },
+                ],
               }
             : null,
           {
