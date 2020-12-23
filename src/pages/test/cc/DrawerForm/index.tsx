@@ -3,8 +3,8 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable, { ActionType } from '@ant-design/pro-table';
 import { Button, Divider, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { getAllServices } from './service';
 import { FormModeEnum } from '@/data';
+import { getAllServices } from './service';
 import { TestInterface } from './data';
 import CCDrawer from './CCDrawer';
 import { CCColumns } from './interface';
@@ -184,12 +184,21 @@ const Organization = () => {
         props: {
           elType: 'upload',
           action: '/upload.do',
-          listType: 'picture',
+          // listType: 'picture',
           multiple: true,
+          fileNameKey: 'fileName',
           // children: <a>上传文件</a>,
         },
       },
       hideInTable: true,
+      renderText: (val, entity) => {
+        if (entity.uploadFile && entity.uploadFile.length > 0) {
+          return entity.uploadFile.map((file) => {
+            return <img alt="" src={file.url} key={file.id} style={{ width: 40 }} />;
+          });
+        }
+        return null;
+      },
     },
     {
       title: '操作',

@@ -69,6 +69,27 @@ const CCForm: React.FC<CCFormProps> = ({
           const rules = item.formItem?.props?.rules || item.formItemProps?.rules;
 
           if (item.formItem?.props?.elType === 'upload') {
+            const fileList = !isEmpty(initialValue)
+              ? initialValue.map((file: any, index: number) => {
+                  let name = '';
+                  if (
+                    item.formItem?.props?.fileNameKey &&
+                    file[item.formItem?.props?.fileNameKey]
+                  ) {
+                    name = file[item.formItem?.props?.fileNameKey];
+                  } else if (!isEmpty(file.name)) {
+                    name = file.name;
+                  } else {
+                    name = `文件${index + 1}`;
+                  }
+                  return {
+                    ...file,
+                    uid: file.id || index,
+                    name,
+                    status: 'done',
+                  };
+                })
+              : [];
             return (
               <Col key={key} {...newColLayout}>
                 <Form.Item
@@ -86,7 +107,7 @@ const CCForm: React.FC<CCFormProps> = ({
                     }
                     return e && e.fileList;
                   }}
-                  initialValue={!isEmpty(initialValue) ? initialValue : []}
+                  initialValue={fileList}
                 >
                   <Upload
                     name={item.dataIndex ? `${item.dataIndex}` : 'file'}

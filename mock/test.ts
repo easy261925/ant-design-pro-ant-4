@@ -20,6 +20,15 @@ const genList = (current: number, pageSize: number) => {
       textarea:
         '这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字',
       select: `${i % 2}`,
+      uploadFile: [
+        {
+          id: '1',
+          // fileName: 'abc',
+          // name: 'image.png',
+          // status: 'done',
+          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+        },
+      ],
     });
   }
   list.reverse();

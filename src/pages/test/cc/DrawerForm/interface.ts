@@ -11,6 +11,7 @@ interface FormItemPropsInterface {
   placeholder?: string;
   mode?: 'multiple' | 'tags';
   elType?: 'switch' | 'upload';
+  fileNameKey?: string;
 }
 
 export interface FormItemContent {

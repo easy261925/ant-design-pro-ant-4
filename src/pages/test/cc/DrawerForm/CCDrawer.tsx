@@ -1,4 +1,4 @@
-import React, { useState, ReactNode, Fragment } from 'react';
+import React, { useState, ReactNode, Fragment, CSSProperties } from 'react';
 import { Drawer, Button, Row, Form } from 'antd';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { FormModeEnum, FormModeLabelEnum } from '@/data';
@@ -25,6 +25,7 @@ interface CCDrawerProps {
     params: Object;
     columns: ProColumns<any>[];
   };
+  bodyStyle?: CSSProperties;
 }
 
 const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
@@ -45,6 +46,7 @@ const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
     destroyOnClose = true,
     onClickCallback,
     descriptionsProps,
+    bodyStyle = { marginBottom: 24 },
     ...ext
   } = props;
   const [visible, setVisible] = useState(false);
@@ -120,6 +122,7 @@ const CCDrawer: React.FC<CCDrawerProps & DrawerProps> = (props) => {
         onClose={onClosed}
         visible={visible}
         destroyOnClose={destroyOnClose}
+        bodyStyle={bodyStyle}
         {...ext}
       >
         {formmode === FormModeEnum.view ? (

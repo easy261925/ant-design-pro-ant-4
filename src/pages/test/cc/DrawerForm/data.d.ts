@@ -9,6 +9,7 @@ export interface TestInterface extends BaseBean {
   dateRange?: string[] | number[];
   switch?: boolean;
   digit?: number;
+  uploadFile?: any[];
 }
 
 export interface TableListData {
