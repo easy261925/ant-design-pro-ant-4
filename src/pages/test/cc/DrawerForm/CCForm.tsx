@@ -16,8 +16,8 @@ import { ProColumns } from '@ant-design/pro-table';
 import { get } from 'lodash';
 import moment from 'moment';
 import { LayoutInterface, FormItemLayoutInterface } from '@/data';
-import { CCColumns } from './interface';
 import { isEmpty } from '@/utils/utils';
+import { CCColumns, modeType } from './interface';
 import PickerWithType from './PickerWithType';
 
 interface CCFormProps {
@@ -249,6 +249,14 @@ const CCForm: React.FC<CCFormProps> = ({
 
           if (item.valueEnum && Object.keys(item.valueEnum).length > 0) {
             const selectKeys = Object.keys(item.valueEnum);
+            // eslint-disable-next-line
+            let mode: modeType = undefined;
+            if (
+              item?.fieldProps?.mode === 'multiple' ||
+              item?.formItem?.props?.mode === 'multiple'
+            ) {
+              mode = 'multiple';
+            }
             return (
               <Col key={key} {...newColLayout}>
                 <Form.Item
@@ -260,10 +268,7 @@ const CCForm: React.FC<CCFormProps> = ({
                   rules={rules}
                   initialValue={initialValue || []}
                 >
-                  <Select
-                    mode={item.formItem?.props?.mode}
-                    placeholder={item.formItem?.props?.placeholder}
-                  >
+                  <Select mode={mode} placeholder={item.formItem?.props?.placeholder}>
                     {selectKeys.map((value) => {
                       return (
                         <Select.Option value={value} key={value}>

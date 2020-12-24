@@ -32,23 +32,26 @@ const Model: LoginModelType = {
 
   state: {
     status: undefined,
-    statusContent: ''
+    statusContent: '',
   },
 
   effects: {
     *userLogin({ payload }, { call, put }) {
-      const { success, data, message: msg } = yield call(loginService, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: {
-          status: success,
-          currentAuthority: data ? data.currentAuthority : [],
-          type: payload.type,
-          statusContent: msg,
-        },
-      });
-      if (success) {
-        setToken(data.token);
+      if (
+        payload.username === 'test' &&
+        payload.password === 'test' &&
+        payload.type === 'account'
+      ) {
+        // TODO 预览登录，真实开发请删除 if 内代码
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {
+            status: true,
+            currentAuthority: [],
+            type: payload.type,
+          },
+        });
+        setToken('test-token');
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         message.success('🎉 🎉 🎉  登录成功！');
@@ -66,6 +69,37 @@ const Model: LoginModelType = {
           }
         }
         history.replace(redirect || '/');
+      } else {
+        const { success, data, message: msg } = yield call(loginService, payload);
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {
+            status: success,
+            currentAuthority: data ? data.currentAuthority : [],
+            type: payload.type,
+            statusContent: msg,
+          },
+        });
+        if (success) {
+          setToken(data.token);
+          const urlParams = new URL(window.location.href);
+          const params = getPageQuery();
+          message.success('🎉 🎉 🎉  登录成功！');
+          let { redirect } = params as { redirect: string };
+          if (redirect) {
+            const redirectUrlParams = new URL(redirect);
+            if (redirectUrlParams.origin === urlParams.origin) {
+              redirect = redirect.substr(urlParams.origin.length);
+              if (redirect.match(/^\/.*#/)) {
+                redirect = redirect.substr(redirect.indexOf('#') + 1);
+              }
+            } else {
+              window.location.href = '/';
+              return;
+            }
+          }
+          history.replace(redirect || '/');
+        }
       }
     },
 
@@ -75,7 +109,7 @@ const Model: LoginModelType = {
       setAuthority([]);
       removeToken();
       if (window.location.pathname !== '/user/login' && !redirect) {
-        const redirectUrl = token ? window.location.href.split('?')[0] : window.location.href
+        const redirectUrl = token ? window.location.href.split('?')[0] : window.location.href;
         setTimeout(() => {
           history.replace({
             pathname: '/user/login',
@@ -83,7 +117,7 @@ const Model: LoginModelType = {
               redirect: redirectUrl,
             }),
           });
-        }, 100)
+        }, 100);
       }
     },
   },
@@ -101,9 +135,9 @@ const Model: LoginModelType = {
     save(state, { payload }) {
       return {
         ...state,
-        ...payload
-      }
-    }
+        ...payload,
+      };
+    },
   },
 };
 
