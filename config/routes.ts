@@ -37,9 +37,9 @@ export default [
                     component: './test/cc/DrawerForm',
                   },
                   {
-                    path: '/test/dnd',
+                    path: '/test/todo',
                     name: '待办任务',
-                    component: './test/cc/Dnd',
+                    component: './test/cc/Todo',
                   },
                 ],
               }

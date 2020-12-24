@@ -19,13 +19,18 @@ const multipleEnum = {
 const Organization = () => {
   const actionRef = useRef<ActionType>();
 
-  const onFinish = (values?: TestInterface) => {
+  const onFinish = async (values?: TestInterface) => {
     console.log('values', values);
     // const { dtCreaDateTime } = values
     // console.log('dtCreaDateTime', moment(dtCreaDateTime).format('YYYY-MM-DD HH:mm:ss'))
   };
 
   const columns: CCColumns<TestInterface>[] = [
+    {
+      title: '输入框',
+      dataIndex: 'input',
+      valueType: 'text',
+    },
     {
       title: '用户名',
       dataIndex: 'username',
