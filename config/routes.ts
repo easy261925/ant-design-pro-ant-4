@@ -41,6 +41,11 @@ export default [
                     name: '待办任务',
                     component: './test/cc/Todo',
                   },
+                  {
+                    path: '/test/user',
+                    name: '人员管理',
+                    component: './test/cc/User/index.jsx',
+                  },
                 ],
               }
             : null,
