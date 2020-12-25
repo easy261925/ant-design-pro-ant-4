@@ -1,13 +1,35 @@
-import React, { Fragment } from 'react';
-import { CCDrawer, CCColumns, FormModeEnum } from 'easycc-rc-4';
+import React, { Fragment, useState, useCallback, useEffect } from 'react';
+import { CCDrawer, CCColumns, FormModeEnum, CCModalTable } from 'easycc-rc-4';
 import ProTable, { ProColumns } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Divider, Popconfirm } from 'antd';
+import { Button, Divider, Popconfirm, Select, Spin } from 'antd';
 import { TestInterface } from '../DrawerForm/data';
-// import CCDrawer from '../DrawerForm/CCDrawer'
 import { getAllServices } from '../DrawerForm/service';
+import { treeData, userColumns } from './mock';
+import debounce from 'lodash/debounce';
 
 const Index = () => {
+  // CCModalTable 中参数
+  const [tableParams, setTableParams] = useState({});
+  // 选择联系人中 loading
+  const [fetching, setFetching] = useState(false);
+  const [userDataSource, setUserDataSource] = useState<TestInterface[]>([]);
+
+  const getAllUser = () => {
+    getAllServices({ current: 1, pageSize: 99999 })
+      .then((res) => {
+        setUserDataSource(res.data);
+        setFetching(false);
+      })
+      .catch(() => {
+        setFetching(false);
+      });
+  };
+
+  useEffect(() => {
+    getAllUser();
+  }, []);
+
   const onCreate = async (values: TestInterface) => {
     console.log('onCreate', values);
     return new Promise((resolve) => {
@@ -29,18 +51,68 @@ const Index = () => {
     });
   };
 
+  const onSelectTreeKeys = (values: string[], info: any, actionRef: any) => {
+    setTableParams({
+      orgId: values[0],
+    });
+    if (actionRef && actionRef.current) {
+      actionRef.current.reload();
+    }
+  };
+
+  const selectOnFinish = (rowKeys: any, rows: any) => {
+    console.log('rowKeys', rowKeys);
+    console.log('rows', rows);
+  };
+
+  // 防抖函数
+  const debouncedSave = useCallback(
+    debounce((nextValue) => {
+      setFetching(true);
+      getAllServices({
+        username: nextValue,
+      })
+        .then((res) => {
+          setUserDataSource(res.data);
+          setFetching(false);
+        })
+        .catch(() => {
+          setFetching(false);
+        });
+    }, 800),
+    [],
+  );
+
   const columns: CCColumns<TestInterface>[] & ProColumns<TestInterface>[] = [
+    {
+      title: '选择联系人',
+      dataIndex: 'selectUser',
+      formItem: {
+        elType: 'selectUser',
+        element: (
+          <Select
+            mode="multiple"
+            placeholder="请选择联系人"
+            notFoundContent={fetching ? <Spin size="small" /> : null}
+            filterOption={false}
+            onSearch={debouncedSave}
+            style={{ width: '100%' }}
+          >
+            {userDataSource.map((item) => (
+              <Select.Option key={item.id} value={item.id}>
+                {item.username}
+              </Select.Option>
+            ))}
+          </Select>
+        ),
+      },
+    },
     {
       title: '用户名',
       dataIndex: 'username',
       tooltip: '用户名',
       valueType: 'text',
       formItem: {
-        // colLayout: { span: 12 },
-        // formItemLayout: {
-        //   labelCol: { span: 6 },
-        //   wrapperCol: { span: 18 }
-        // },
         props: {
           placeholder: '请输入待办事项',
           rules: [
@@ -138,6 +210,25 @@ const Index = () => {
           });
         }
         return null;
+      },
+    },
+    {
+      title: '选择联系人ModalTable',
+      hideInTable: true,
+      dataIndex: 'person',
+      formItem: {
+        element: (
+          <CCModalTable
+            key="m"
+            title="选择联系人"
+            columns={userColumns}
+            treeData={treeData}
+            request={(params, sorter, filter) => getAllServices({ ...params, sorter, filter })}
+            onSelectTreeKeys={onSelectTreeKeys}
+            tableParams={tableParams}
+            onFinish={selectOnFinish}
+          />
+        ),
       },
     },
     {

@@ -10,6 +10,7 @@ export interface TestInterface extends BaseBean {
   switch?: boolean;
   digit?: number;
   uploadFile?: any[];
+  selectUser?: any[];
 }
 
 export interface TableListData {

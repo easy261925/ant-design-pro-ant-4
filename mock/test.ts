@@ -29,6 +29,7 @@ const genList = (current: number, pageSize: number) => {
           url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         },
       ],
+      selectUser: [91],
     });
   }
   list.reverse();
