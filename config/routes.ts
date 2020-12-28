@@ -48,7 +48,7 @@ export default [
                   },
                 ],
               }
-            : null,
+            : {},
           {
             path: '/welcome',
             name: 'welcome',
