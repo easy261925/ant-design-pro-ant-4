@@ -13,7 +13,7 @@ const proSettings: DefaultSettings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'ADMIN',
+  title: '演示系统',
   pwa: false,
   iconfontUrl: '',
 };
