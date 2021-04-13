@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import ProTable, { ProTableProps } from '@ant-design/pro-table';
-import { CCColumns } from 'easycc-rc-4';
+import type { CCColumns } from '../interface';
 import type { ActionType } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
 

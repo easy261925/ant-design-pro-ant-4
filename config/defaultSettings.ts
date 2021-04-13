@@ -2,9 +2,11 @@ import { Settings as ProSettings } from '@ant-design/pro-layout';
 
 type DefaultSettings = Partial<ProSettings> & {
   pwa: boolean;
+  version: string;
 };
 
 const proSettings: DefaultSettings = {
+  version: '1.0.0',
   navTheme: 'dark',
   // 拂晓蓝
   primaryColor: '#1890ff',

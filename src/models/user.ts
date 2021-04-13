@@ -19,6 +19,8 @@ export interface CurrentUser {
   }[];
   id?: string;
   unreadCount?: number;
+  userRoles?: number[];
+  loginName?: string;
 }
 
 export interface UserModelState {

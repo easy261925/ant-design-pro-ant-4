@@ -196,7 +196,7 @@ const CCForm: React.FC<CCFormProps> = ({
                 >
                   <Upload
                     name={item.dataIndex ? `${item.dataIndex}` : 'file'}
-                    action={item.formItem?.props?.action || '/upload.do'}
+                    action={item.formItem?.props?.action || ''}
                     listType={item.formItem?.props?.listType || 'text'}
                     multiple={item.formItem?.props?.multiple}
                     accept={item.formItem?.props?.accept}
@@ -376,15 +376,17 @@ const CCForm: React.FC<CCFormProps> = ({
           if (item.formItem?.props?.eltype === 'table') {
             let dataSource = [];
             if (
-              form?.getFieldValue(item.dataIndex) &&
-              form?.getFieldValue(item.dataIndex).length > 0
+              form?.getFieldValue(item.dataIndex)
+              // &&
+              // form?.getFieldValue(item.dataIndex).length > 0
             ) {
               dataSource = form?.getFieldValue(item.dataIndex)
                 ? form?.getFieldValue(item.dataIndex)
                 : [];
-            } else if (record && record[item.dataIndex] && record[item.dataIndex].length > 0) {
-              dataSource = record[item.dataIndex];
             }
+            //  else if (record && record[item.dataIndex] && record[item.dataIndex].length > 0) {
+            //   dataSource = record[item.dataIndex];
+            // }
 
             const cols: CCColumns<any>[] = item.formItem?.props?.hideOption
               ? item.formItem?.props?.columns

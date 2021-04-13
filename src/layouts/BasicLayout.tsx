@@ -141,13 +141,18 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         }
         return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
-      breadcrumbRender={(routers = []) => [
-        {
-          path: '/',
-          breadcrumbName: formatMessage({ id: 'menu.home' }),
-        },
-        ...routers,
-      ]}
+      breadcrumbRender={(routers = []) =>
+        [
+          (Object.prototype.toString.call(routers) === '[object Array]' && [
+            {
+              path: '/',
+              breadcrumbName: formatMessage({ id: 'menu.home' }),
+            },
+            ...routers,
+          ]) ||
+            [],
+        ] as any
+      }
       itemRender={(route, params, routes, paths) => {
         const first = routes.indexOf(route) === 0;
         return first ? (

@@ -23,42 +23,38 @@ export default [
         routes: [
           {
             path: '/',
-            redirect: '/welcome/drawer',
+            redirect: '/workspace',
           },
           {
-            path: '/welcome',
-            name: '系统功能',
+            path: '/workspace',
+            name: '工作台',
+            icon: 'setting',
+            component: './workspace',
+          },
+          {
+            path: '/test',
+            name: '测试页面',
             icon: 'setting',
             routes: [
               {
-                path: '/welcome/drawer',
-                name: 'API',
-                component: './test/cc/DrawerForm',
+                path: '/test/demo',
+                name: 'demo',
+                component: './test/demo',
               },
               {
-                path: '/welcome/todo',
-                name: '权限管理',
-                component: './test/cc/Todo',
-              },
-              {
-                path: '/welcome/user',
-                name: '人员管理',
-                component: './test/cc/User/index.jsx',
-              },
-              {
-                path: '/welcome/dnd',
-                name: 'ReactDnd',
-                component: './test/ReactDnd/index.jsx',
-              },
-              {
-                path: '/welcome/GGEditor',
+                path: '/test/GGEditor',
                 name: 'GGEditor',
                 component: './test/GGEditor',
               },
               {
-                path: '/welcome/LayoutEditor',
+                path: '/test/LayoutEditor',
                 name: 'LayoutEditor',
                 component: './test/LayoutEditor',
+              },
+              {
+                path: '/test/ReactDnd',
+                name: 'ReactDnd',
+                component: './test/ReactDnd',
               },
             ],
           },
@@ -66,12 +62,31 @@ export default [
             path: '/setting',
             name: '系统管理',
             icon: 'setting',
+            // authority: ['/setting'],
             routes: [
               {
                 path: '/setting/organization',
                 name: '机构管理',
-                icon: 'smile',
                 component: './setting/organization',
+                // authority: ['/setting/organization'],
+              },
+              {
+                path: '/setting/role',
+                name: '角色管理',
+                component: './setting/role',
+                // authority: ['/setting/role'],
+              },
+              {
+                path: '/setting/user',
+                name: '用户管理',
+                component: './setting/user',
+                // authority: ['/setting/user'],
+              },
+              {
+                path: '/setting/dic',
+                name: '数据字典',
+                component: './setting/dic',
+                // authority: ['/setting/dic'],
               },
             ],
           },

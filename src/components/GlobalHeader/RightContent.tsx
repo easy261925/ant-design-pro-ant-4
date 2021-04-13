@@ -4,6 +4,9 @@ import { connect, ConnectProps } from 'umi';
 import { ConnectState } from '@/models/connect';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
+import { Space, Tooltip } from 'antd';
+import proSettings from '../../../config/defaultSettings';
+import { BranchesOutlined } from '@ant-design/icons';
 
 export interface GlobalHeaderRightProps extends Partial<ConnectProps>, Partial<ProSettings> {
   theme?: ProSettings['navTheme'] | 'realDark';
@@ -19,6 +22,10 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
 
   return (
     <div className={className}>
+      <Space style={{ marginRight: 20 }}>
+        <BranchesOutlined />
+        <Tooltip title="当前版本">{proSettings.version}</Tooltip>
+      </Space>
       {/* <HeaderSearch
         className={`${styles.action} ${styles.search}`}
         placeholder="站内搜索"

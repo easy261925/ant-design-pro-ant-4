@@ -6,3 +6,4 @@ export { FormItemLayoutInterface, LayoutInterface } from './easycc-rc-4/interfac
 export { CCColumns } from './easycc-rc-4/interface/formItem';
 export { FormModeEnum, FormModeLabelEnum } from './easycc-rc-4/interface/formmode';
 export { TablePagination } from './easycc-rc-4/interface';
+export { CCProTable } from './easycc-rc-4';

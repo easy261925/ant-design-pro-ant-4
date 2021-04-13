@@ -1,3 +1,5 @@
+import { DicResultTypeEnum } from '@/interface';
+import { getAllDicService } from '@/services/setting/dic';
 import { parse } from 'querystring';
 
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
@@ -33,4 +35,27 @@ export const isEmpty = (value: any) => {
   }
 
   return false;
+};
+
+export const getDicByDicName = async (
+  dicName: string,
+  resultType: DicResultTypeEnum = DicResultTypeEnum.MAP,
+) => {
+  return getAllDicService({ current: 1, pageSize: 99999 }).then((res) => {
+    if (res.success) {
+      if (res.data.find((item: any) => item.groupNo === dicName)) {
+        const dicDataArray = res.data.find((item: any) => item.groupNo === dicName)?.sysDictDto;
+        if (resultType === DicResultTypeEnum.MAP) {
+          const dicDataArrayEnum = {};
+          dicDataArray.forEach((item: any) => {
+            dicDataArrayEnum[item.dictNo] = { text: item.dictName };
+          });
+          return dicDataArrayEnum;
+        } else if (resultType === DicResultTypeEnum.ARRAY) {
+          return dicDataArray;
+        }
+      }
+    }
+    return {};
+  });
 };

@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import { parse } from 'url';
-import { TestInterface, TestParams } from '@/pages/test/cc/DrawerForm/data';
 
 const genList = (current: number, pageSize: number) => {
-  const list: TestInterface[] = [];
+  const list: any[] = [];
 
   for (let i = 0; i < pageSize; i += 1) {
     // const index = (current - 1) * 10 + i;
@@ -44,8 +43,7 @@ function getAll(req: Request, res: Response, u: string) {
     realUrl = req.url;
   }
   const { current = 1, pageSize = 10 } = req.query;
-  const params = (parse(realUrl, true).query as unknown) as TestParams;
-  console.log('params', params);
+  const params = (parse(realUrl, true).query as unknown) as any;
   let dataSource = [...tableListDataSource].slice(
     ((current as number) - 1) * (pageSize as number),
     (current as number) * (pageSize as number),
