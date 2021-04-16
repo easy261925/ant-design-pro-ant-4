@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Button, Row, Spin, Input, message } from 'antd';
 import { EditTwoTone } from '@ant-design/icons';
-import { CCModal } from '@/components';
+import { CCModal } from 'easycc-rc-4';
 import styles from './index.less';
 
 const getItems = (count, offset = 0) =>

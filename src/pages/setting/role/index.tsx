@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType } from '@ant-design/pro-table';
 import { Tree, Form, Divider, Popconfirm, Switch } from 'antd';
 import { CurrentUser } from '@/models/user';
-import { CCProTable, CCDrawer, CCColumns, FormModeEnum } from '@/components/easycc-rc-4';
+import { CCProTable, CCDrawer, CCColumns, FormModeEnum } from 'easycc-rc-4';
 import { ConnectState } from '@/models/connect';
 import { connect } from 'dva';
 import {

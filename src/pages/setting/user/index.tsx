@@ -13,9 +13,9 @@ import {
   deleteUserService,
   resetPasswordService,
 } from '@/services/setting/user';
-import { CCDrawer, FormModeEnum } from '@/components';
+import { CCDrawer, FormModeEnum } from 'easycc-rc-4';
 import { CurrentUser } from '@/models/user';
-import type { CCColumns } from '@/components';
+import type { CCColumns } from 'easycc-rc-4';
 import { TreeSelect, Select, Popconfirm, Divider, Switch, Tag, message } from 'antd';
 import { ConnectState } from '@/models/connect';
 import { getDicByDicName } from '@/utils/utils';

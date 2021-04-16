@@ -2,7 +2,7 @@ import React, { Fragment, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType } from '@ant-design/pro-table';
 import { Divider, Popconfirm, Switch } from 'antd';
-import { CCDrawer, CCColumns, CCProTable, FormModeEnum } from '@/components/easycc-rc-4';
+import { CCDrawer, CCColumns, CCProTable, FormModeEnum } from 'easycc-rc-4';
 import { OrganizationEntity } from './data';
 import {
   getAllService,

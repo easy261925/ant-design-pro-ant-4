@@ -56,4 +56,9 @@ export default {
   'menu.测试页面.GGEditor': 'GGEditor',
   'menu.测试页面.LayoutEditor': 'LayoutEditor',
   'menu.测试页面.ReactDnd': 'ReactDnd',
+  'menu.系统管理': '系统管理',
+  'menu.系统管理.用户管理': '用户管理',
+  'menu.系统管理.数据字典': '数据字典',
+  'menu.系统管理.机构管理': '机构管理',
+  'menu.系统管理.角色管理': '角色管理',
 };
