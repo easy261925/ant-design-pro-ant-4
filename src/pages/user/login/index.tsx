@@ -1,11 +1,5 @@
-import {
-  LockTwoTone,
-  MailTwoTone,
-  MobileTwoTone,
-  UserOutlined,
-  WechatOutlined,
-} from '@ant-design/icons';
-import { Alert, message, Tabs, Space } from 'antd';
+import { LockTwoTone, MailTwoTone, MobileTwoTone, UserOutlined } from '@ant-design/icons';
+import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormText } from '@ant-design/pro-form';
 import { connect, Dispatch, useIntl, FormattedMessage } from 'umi';
@@ -68,15 +62,15 @@ const Login: React.FC<LoginProps> = (props) => {
     });
   };
 
-  const loginWith = (current: string) => {
-    switch (current) {
-      case 'wechart':
-        window.open('http://localhost:8150/api/ucenter/wx/login');
-        break;
-      default:
-        break;
-    }
-  };
+  // const loginWith = (current: string) => {
+  //   switch (current) {
+  //     case 'wechart':
+  //       window.open('http://localhost:8150/api/ucenter/wx/login');
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   return (
     <div className={styles.main}>
@@ -94,7 +88,7 @@ const Login: React.FC<LoginProps> = (props) => {
             },
           },
         }}
-        onFinish={async (values) => {
+        onFinish={async (values: LoginParamsType) => {
           handleSubmit(values);
         }}
       >
@@ -249,15 +243,15 @@ const Login: React.FC<LoginProps> = (props) => {
           </a>
           </div> */}
       </ProForm>
-      <Space className={styles.other}>
+      {/* <Space className={styles.other}>
         <FormattedMessage id="pages.login.loginWith" defaultMessage="其他登录方式" />
         <WechatOutlined className={styles.icon} onClick={() => loginWith('wechart')} />
-      </Space>
+      </Space> */}
     </div>
   );
 };
 
 export default connect(({ login, loading }: ConnectState) => ({
   userLogin: login,
-  submitting: loading.effects['login/login'],
+  submitting: loading.effects['login/userLogin'],
 }))(Login);
